@@ -23,6 +23,7 @@ class ForumService
     // Poll format: question, options[], multiple, max_choices, closes_at (or days), results, show_voters, allow_change
     public function createThread(User $user, Section $section, string $title, string $body, ?string $prefix = null, ?array $poll = null): Thread
     {
+        $this->ensurePollsAllowed($section, $poll);
         [$title, $flaggedTitle] = $this->words->apply($title, 'title');
         [$body, $flagged] = $this->words->apply($body);
         $this->throttle($user, 'body');
@@ -45,6 +46,7 @@ class ForumService
 
     public function reply(User $user, Thread $thread, string $body, ?array $poll = null, string $field = 'body'): Post
     {
+        $this->ensurePollsAllowed($thread->section, $poll);
         [$body, $flagged] = $this->words->apply($body, $field);
         $this->throttle($user, $field);
 
@@ -159,6 +161,13 @@ class ForumService
             if (! isset($notified[$u->id]) && $canSee($u)) {
                 $u->notify(new ForumActivity('reply', ':actor replied to “:title”', ['actor' => $author->name, 'title' => $thread->title], $url, $author));
             }
+        }
+    }
+
+    protected function ensurePollsAllowed(Section $section, ?array $poll): void
+    {
+        if ($poll && ! $section->polls_enabled) {
+            throw ValidationException::withMessages(['withPoll' => __('Polls are disabled in this section.')]);
         }
     }
 

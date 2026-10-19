@@ -1323,5 +1323,19 @@
     "All my sections": "Wszystkie moje działy",
     "Fill in at least one filter.": "Wypełnij co najmniej jeden filtr.",
     "No posts match.": "Brak pasujących postów.",
-    "Statistics": "Statystyki"
+    "Statistics": "Statystyki",
+    "Cannot create threads: :roles": "Nie mogą tworzyć wątków: :roles",
+    "Polls are disabled in this section.": "Ankiety są wyłączone w tym dziale.",
+    "This section is archived: it is read-only.": "Ten dział jest zarchiwizowany: tylko do odczytu.",
+    "archived section — moderator reply": "dział zarchiwizowany — odpowiedź moderatora",
+    "Archived: read-only": "Zarchiwizowany: tylko do odczytu",
+    "Permissions by role": "Uprawnienia według roli",
+    "See the section": "Widzieć dział",
+    "Create threads": "Tworzyć wątki",
+    "Guests": "Goście",
+    "A user needs at least one allowed role: global roles count everywhere, section roles only in their section. Administrators have every right. Private sections still need a role scoped to them.": "Użytkownik potrzebuje co najmniej jednej dozwolonej roli: role globalne liczą się wszędzie, role działu tylko w swoim dziale. Administratorzy mają wszystkie prawa. Dział prywatny nadal wymaga przypisanej do niego roli.",
+    "Archived (read-only, except for moderators)": "Zarchiwizowany (tylko do odczytu, z wyjątkiem moderatorów)",
+    "Polls allowed": "Ankiety dozwolone",
+    "Cannot see the section: :roles": "Nie mogą widzieć działu: :roles",
+    "Polls disabled": "Ankiety wyłączone"
 }

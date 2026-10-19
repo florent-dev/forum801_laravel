@@ -13,7 +13,7 @@ class FeedController extends Controller
     public function latest()
     {
         $threads = Thread::with(['section', 'user', 'firstPost'])
-            ->whereIn('section_id', Section::where('visibility', 'public')->select('id'))
+            ->whereIn('section_id', Section::where('visibility', 'public')->viewableByRoles(null)->select('id'))
             ->latest('id')->limit(30)->get();
 
         return $this->rss(config('app.name'), route('home'), __('Latest threads'), $threads);
@@ -21,7 +21,7 @@ class FeedController extends Controller
 
     public function section(Section $section)
     {
-        abort_if($section->isPrivate(), 404);
+        abort_if($section->isPrivate() || ! $section->allowsViewFrom(null), 404);
         $threads = $section->threads()->with(['section', 'user', 'firstPost'])->latest('id')->limit(30)->get();
 
         return $this->rss(config('app.name').' · '.$section->name, route('sections.show', $section), (string) $section->description, $threads);

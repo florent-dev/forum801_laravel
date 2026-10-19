@@ -1323,5 +1323,19 @@
     "All my sections": "Al mijn secties",
     "Fill in at least one filter.": "Vul minstens één filter in.",
     "No posts match.": "Geen berichten gevonden.",
-    "Statistics": "Statistieken"
+    "Statistics": "Statistieken",
+    "Cannot create threads: :roles": "Kunnen geen topics maken: :roles",
+    "Polls are disabled in this section.": "Peilingen zijn uitgeschakeld in deze sectie.",
+    "This section is archived: it is read-only.": "Deze sectie is gearchiveerd: alleen-lezen.",
+    "archived section — moderator reply": "gearchiveerde sectie — antwoord van moderator",
+    "Archived: read-only": "Gearchiveerd: alleen-lezen",
+    "Permissions by role": "Rechten per rol",
+    "See the section": "Sectie zien",
+    "Create threads": "Topics maken",
+    "Guests": "Gasten",
+    "A user needs at least one allowed role: global roles count everywhere, section roles only in their section. Administrators have every right. Private sections still need a role scoped to them.": "Een gebruiker heeft minstens één toegestane rol nodig: globale rollen gelden overal, sectierollen alleen in hun sectie. Beheerders hebben alle rechten. Een privésectie vereist nog steeds een rol die eraan is toegewezen.",
+    "Archived (read-only, except for moderators)": "Gearchiveerd (alleen-lezen, behalve voor moderators)",
+    "Polls allowed": "Peilingen toegestaan",
+    "Cannot see the section: :roles": "Kunnen de sectie niet zien: :roles",
+    "Polls disabled": "Peilingen uitgeschakeld"
 }

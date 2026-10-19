@@ -13,10 +13,18 @@ class Section extends Model
 {
     use HasFactory;
 
-    // Mirror the database defaults so new instances are complete before reload
-    protected $attributes = ['community' => 'en', 'visibility' => 'public', 'position' => 0];
+    // Pseudo-role for visitors who are not logged in, usable in denied_view_roles
+    public const GUEST = 'guest';
 
-    protected $fillable = ['name', 'slug', 'community', 'description', 'icon', 'visibility', 'position', 'guild_id'];
+    // Mirror the database defaults so new instances are complete before reload
+    protected $attributes = ['community' => 'en', 'visibility' => 'public', 'position' => 0, 'denied_view_roles' => '[]', 'denied_thread_roles' => '[]', 'is_archived' => false, 'polls_enabled' => true];
+
+    protected $fillable = ['name', 'slug', 'community', 'description', 'icon', 'visibility', 'position', 'guild_id', 'denied_view_roles', 'denied_thread_roles', 'is_archived', 'polls_enabled'];
+
+    protected function casts(): array
+    {
+        return ['denied_view_roles' => 'array', 'denied_thread_roles' => 'array', 'is_archived' => 'boolean', 'polls_enabled' => 'boolean'];
+    }
 
     public function getRouteKeyName(): string
     {
@@ -53,6 +61,42 @@ class Section extends Model
         return $this->belongsTo(Guild::class);
     }
 
+    // Global role names, members by default; a visitor only has the guest pseudo-role
+    public static function globalRoleNames(?User $user): array
+    {
+        if (! $user) {
+            return [self::GUEST];
+        }
+
+        return $user->roleAssignments()->whereNull('pivot.scope_type')->pluck('name')->unique()->values()->all() ?: [Role::MEMBER];
+    }
+
+    // The roles that count in this section: global ones plus those scoped to it
+    public function roleNamesFor(?User $user): array
+    {
+        $scoped = $user
+            ? $user->roleAssignments()->filter(fn (Role $r) => $r->pivot->scope_type === 'section' && (int) $r->pivot->scope_id === $this->id)->pluck('name')->all()
+            : [];
+
+        return array_values(array_unique([...self::globalRoleNames($user), ...$scoped]));
+    }
+
+    // Admins always pass; others need at least one role that is not denied
+    protected function grants(?User $user, array $denied): bool
+    {
+        return (bool) $user?->isAdmin() || array_diff($this->roleNamesFor($user), $denied) !== [];
+    }
+
+    public function allowsViewFrom(?User $user): bool
+    {
+        return $this->grants($user, $this->denied_view_roles ?? []);
+    }
+
+    public function allowsThreadsFrom(User $user): bool
+    {
+        return $this->grants($user, $this->denied_thread_roles ?? []);
+    }
+
     public function isPrivate(): bool
     {
         return $this->visibility === 'private';
@@ -70,9 +114,26 @@ class Section extends Model
         return $query->whereNull('guild_id');
     }
 
+    // Same rule as allowsViewFrom(): one global role, or one role scoped to the section, not denied
+    public function scopeViewableByRoles(Builder $query, ?User $user): Builder
+    {
+        $scoped = $user ? $user->roleAssignments()->where('pivot.scope_type', 'section') : collect();
+
+        return $query->where(function ($q) use ($user, $scoped) {
+            $q->whereRaw('not (denied_view_roles @> ?::jsonb)', [json_encode(self::globalRoleNames($user))]);
+            foreach ($scoped as $role) {
+                $q->orWhere(fn ($q) => $q->where('id', (int) $role->pivot->scope_id)->whereRaw('not (denied_view_roles @> ?::jsonb)', [json_encode([$role->name])]));
+            }
+        });
+    }
+
     public function scopeVisibleTo(Builder $query, ?User $user): Builder
     {
-        if ($user?->isAdmin() || $user?->hasGlobalRole(Role::PRIVATE_MODERATOR)) {
+        if ($user?->isAdmin()) {
+            return $query;
+        }
+        $query->viewableByRoles($user);
+        if ($user?->hasGlobalRole(Role::PRIVATE_MODERATOR)) {
             return $query;
         }
         $scopedIds = $user

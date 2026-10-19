@@ -93,3 +93,37 @@ it('searches users by name or email', function () {
 
     Livewire::actingAs($this->admin)->test(Users::class)->set('search', 'find')->assertSee('findme')->assertDontSee('y@other.test');
 });
+
+it('restricts thread creation to the roles allowed on a section', function () {
+    $section = Section::factory()->create();
+    $member = userWithRole(Role::MEMBER);
+    $moderator = userWithRole(Role::MODERATOR, $section);
+    $elsewhere = userWithRole(Role::MODERATOR, Section::factory()->create());
+
+    expect($member->can('createThread', $section))->toBeTrue();
+
+    Livewire::actingAs($this->admin)->test(Sections::class)
+        ->call('edit', $section->id)
+        ->assertSet('form.thread_roles', fn ($roles) => in_array(Role::MEMBER, $roles, true))
+        ->set('form.thread_roles', [Role::MODERATOR])
+        ->call('save')
+        ->assertHasNoErrors();
+
+    $section->refresh();
+    expect($section->denied_thread_roles)->toContain(Role::MEMBER)->not->toContain(Role::MODERATOR)
+        ->and($member->fresh()->can('createThread', $section))->toBeFalse()
+        ->and($moderator->can('createThread', $section))->toBeTrue()
+        // A moderator role scoped to another section does not count here
+        ->and($elsewhere->can('createThread', $section))->toBeFalse()
+        ->and($this->admin->can('createThread', $section))->toBeTrue();
+
+    $this->actingAs($member)->get(route('threads.create', $section))->assertForbidden();
+});
+
+it('rejects unknown roles in the thread creation list', function () {
+    Livewire::actingAs($this->admin)->test(Sections::class)
+        ->set('form.name', 'Announcements')
+        ->set('form.thread_roles', ['administrator', 'nope'])
+        ->call('save')
+        ->assertHasErrors(['form.thread_roles.0', 'form.thread_roles.1']);
+});

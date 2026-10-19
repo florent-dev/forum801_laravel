@@ -24,7 +24,7 @@ class ThreadPolicy
         if (! $user->canParticipate() || $thread->trashed() || ! $this->view($user, $thread)) {
             return false;
         }
-        if (! app(SectionPolicy::class)->canWriteInGuildForum($user, $thread->section)) {
+        if (! app(SectionPolicy::class)->canWriteInGuildForum($user, $thread->section) || ! app(SectionPolicy::class)->canWriteInArchive($user, $thread->section)) {
             return false;
         }
 
@@ -34,7 +34,7 @@ class ThreadPolicy
     public function update(User $user, Thread $thread): bool
     {
         return $this->moderate($user, $thread)
-            || ($thread->user_id === $user->id && ! $thread->is_locked && $user->canParticipate());
+            || ($thread->user_id === $user->id && ! $thread->is_locked && ! $thread->section->is_archived && $user->canParticipate());
     }
 
     public function moderate(User $user, Thread $thread): bool
@@ -66,7 +66,7 @@ class ThreadPolicy
     // The thread author or a moderator can pick the answer that solved it
     public function solve(User $user, Thread $thread): bool
     {
-        return ! $thread->trashed() && ($this->moderate($user, $thread) || ($thread->user_id === $user->id && $user->canParticipate()));
+        return ! $thread->trashed() && ($this->moderate($user, $thread) || ($thread->user_id === $user->id && ! $thread->section->is_archived && $user->canParticipate()));
     }
 
     public function restore(User $user, Thread $thread): bool

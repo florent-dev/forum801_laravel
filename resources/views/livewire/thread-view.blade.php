@@ -234,14 +234,18 @@
         @auth
             @if ($canReply)
                 <form class="form-box" wire:submit="reply">
-                    <h3>{{ __('Reply') }} @if ($thread->is_locked)<span class="pill" style="color:var(--warn)">{{ __('thread locked — moderator reply') }}</span>@endif</h3>
+                    <h3>{{ __('Reply') }} @if ($thread->is_locked)<span class="pill" style="color:var(--warn)">{{ __('thread locked — moderator reply') }}</span>@elseif ($thread->section->is_archived)<span class="pill" style="color:var(--warn)">{{ __('archived section — moderator reply') }}</span>@endif</h3>
                     <x-editor id="reply-body" model="replyBody" :preview="$preview" preview-toggle="togglePreview" draft="reply-{{ $thread->id }}" :placeholder="__('Write your reply… (Markdown supported, Ctrl+Enter to send, @name to mention)')" />
-                    @include('partials.poll-builder')
+                    @if ($thread->section->polls_enabled)
+                        @include('partials.poll-builder')
+                    @endif
                     <div style="margin-top:6px;display:flex;gap:6px;align-items:center">
                         <button class="btn primary" type="submit" wire:loading.attr="disabled" wire:target="reply">{{ __('Send') }}</button>
                         <span wire:loading wire:target="reply" class="muted" style="font-size:11px">{{ __('Sending…') }}</span>
                     </div>
                 </form>
+            @elseif ($thread->section->is_archived)
+                <div class="empty">🗄️ {{ __('This section is archived: it is read-only.') }}</div>
             @elseif ($thread->is_locked)
                 <div class="empty">🔒 {{ __('This thread is locked.') }}</div>
             @elseif (! auth()->user()->canParticipate())

@@ -1323,5 +1323,19 @@
     "All my sections": "Toate secțiunile mele",
     "Fill in at least one filter.": "Completează cel puțin un filtru.",
     "No posts match.": "Niciun mesaj găsit.",
-    "Statistics": "Statistici"
+    "Statistics": "Statistici",
+    "Cannot create threads: :roles": "Nu pot crea subiecte: :roles",
+    "Polls are disabled in this section.": "Sondajele sunt dezactivate în această secțiune.",
+    "This section is archived: it is read-only.": "Această secțiune este arhivată: doar pentru citire.",
+    "archived section — moderator reply": "secțiune arhivată — răspuns de moderator",
+    "Archived: read-only": "Arhivată: doar citire",
+    "Permissions by role": "Permisiuni pe roluri",
+    "See the section": "Vede secțiunea",
+    "Create threads": "Creează subiecte",
+    "Guests": "Vizitatori",
+    "A user needs at least one allowed role: global roles count everywhere, section roles only in their section. Administrators have every right. Private sections still need a role scoped to them.": "Un utilizator are nevoie de cel puțin un rol permis: rolurile globale contează peste tot, rolurile de secțiune doar în secțiunea lor. Administratorii au toate drepturile. O secțiune privată cere în continuare un rol atribuit ei.",
+    "Archived (read-only, except for moderators)": "Arhivată (doar citire, cu excepția moderatorilor)",
+    "Polls allowed": "Sondaje permise",
+    "Cannot see the section: :roles": "Nu pot vedea secțiunea: :roles",
+    "Polls disabled": "Sondaje dezactivate"
 }

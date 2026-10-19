@@ -1323,5 +1323,19 @@
     "All my sections": "Все мои разделы",
     "Fill in at least one filter.": "Заполни хотя бы один фильтр.",
     "No posts match.": "Подходящих сообщений нет.",
-    "Statistics": "Статистика"
+    "Statistics": "Статистика",
+    "Cannot create threads: :roles": "Не могут создавать темы: :roles",
+    "Polls are disabled in this section.": "Опросы отключены в этом разделе.",
+    "This section is archived: it is read-only.": "Этот раздел в архиве: только для чтения.",
+    "archived section — moderator reply": "раздел в архиве — ответ модератора",
+    "Archived: read-only": "В архиве: только чтение",
+    "Permissions by role": "Права по ролям",
+    "See the section": "Видеть раздел",
+    "Create threads": "Создавать темы",
+    "Guests": "Гости",
+    "A user needs at least one allowed role: global roles count everywhere, section roles only in their section. Administrators have every right. Private sections still need a role scoped to them.": "Пользователю нужна хотя бы одна разрешённая роль: глобальные роли действуют везде, роли раздела — только в своём разделе. У администраторов есть все права. Приватный раздел по-прежнему требует назначенной ему роли.",
+    "Archived (read-only, except for moderators)": "В архиве (только чтение, кроме модераторов)",
+    "Polls allowed": "Опросы разрешены",
+    "Cannot see the section: :roles": "Не могут видеть раздел: :roles",
+    "Polls disabled": "Опросы отключены"
 }

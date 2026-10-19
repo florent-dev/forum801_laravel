@@ -1323,5 +1323,19 @@
     "All my sections": "Minden szekcióm",
     "Fill in at least one filter.": "Tölts ki legalább egy szűrőt.",
     "No posts match.": "Nincs egyező hozzászólás.",
-    "Statistics": "Statisztikák"
+    "Statistics": "Statisztikák",
+    "Cannot create threads: :roles": "Nem indíthatnak témát: :roles",
+    "Polls are disabled in this section.": "A szavazások ki vannak kapcsolva ebben a szekcióban.",
+    "This section is archived: it is read-only.": "Ez a szekció archivált: csak olvasható.",
+    "archived section — moderator reply": "archivált szekció — moderátori válasz",
+    "Archived: read-only": "Archivált: csak olvasható",
+    "Permissions by role": "Jogosultságok szerepkör szerint",
+    "See the section": "Szekció megtekintése",
+    "Create threads": "Témaindítás",
+    "Guests": "Vendégek",
+    "A user needs at least one allowed role: global roles count everywhere, section roles only in their section. Administrators have every right. Private sections still need a role scoped to them.": "A felhasználónak legalább egy engedélyezett szerepkörre van szüksége: a globális szerepkörök mindenhol, a szekciószerepkörök csak a saját szekciójukban számítanak. Az adminisztrátoroknak minden joguk megvan. Privát szekcióhoz továbbra is hozzá rendelt szerepkör kell.",
+    "Archived (read-only, except for moderators)": "Archivált (csak olvasható, kivéve a moderátoroknak)",
+    "Polls allowed": "Szavazások engedélyezve",
+    "Cannot see the section: :roles": "Nem láthatják a szekciót: :roles",
+    "Polls disabled": "Szavazások kikapcsolva"
 }

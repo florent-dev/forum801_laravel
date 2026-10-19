@@ -29,7 +29,7 @@ class PostPolicy
             return true;
         }
 
-        return $post->user_id === $user->id && $user->canParticipate() && ! $post->is_hidden && ! $post->trashed() && ! $post->thread->is_locked && ! $post->thread->trashed() && $this->withinEditWindow($post);
+        return $post->user_id === $user->id && $user->canParticipate() && ! $post->is_hidden && ! $post->trashed() && ! $post->thread->is_locked && ! $post->thread->trashed() && ! $post->thread->section->is_archived && $this->withinEditWindow($post);
     }
 
     // Authors may only edit for a limited time when Admin › Settings sets a window
@@ -73,7 +73,7 @@ class PostPolicy
 
     public function react(User $user, Post $post): bool
     {
-        return $user->canParticipate() && ! $post->is_hidden && ! $post->trashed() && ! ($post->user && $post->user->hasBlocked($user)) && ! $post->thread->trashed() && Gate::forUser($user)->allows('view', $post->thread);
+        return $user->canParticipate() && ! $post->is_hidden && ! $post->trashed() && ! ($post->user && $post->user->hasBlocked($user)) && ! $post->thread->trashed() && ! $post->thread->section->is_archived && Gate::forUser($user)->allows('view', $post->thread);
     }
 
     public function report(User $user, Post $post): bool

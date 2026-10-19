@@ -20,7 +20,9 @@
                 <label for="new-body">{{ __('Message') }}</label>
                 <x-editor id="new-body" model="body" :preview="$preview" preview-toggle="togglePreview" rows="14" draft="new-{{ $section->id }}" :placeholder="__('Markdown supported. Ctrl+Enter to post.')" />
             </div>
-            @include('partials.poll-builder')
+            @if ($section->polls_enabled)
+                @include('partials.poll-builder')
+            @endif
             <button class="btn primary" type="submit" wire:loading.attr="disabled">{{ __('Post thread') }}</button>
             <a class="btn" href="{{ route('sections.show', $section) }}" wire:navigate>{{ __('Cancel') }}</a>
         </form>

@@ -18,7 +18,7 @@ class PollPolicy
     {
         $thread = $poll->thread;
 
-        return $user->canParticipate() && ! $poll->isClosed() && ! $thread->is_locked && ! $thread->trashed()
+        return $user->canParticipate() && ! $poll->isClosed() && ! $thread->is_locked && ! $thread->trashed() && ! $thread->section->is_archived
             && Gate::forUser($user)->allows('view', $thread);
     }
 }

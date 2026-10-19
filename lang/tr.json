@@ -1323,5 +1323,19 @@
     "All my sections": "Tüm bölümlerim",
     "Fill in at least one filter.": "En az bir filtre doldur.",
     "No posts match.": "Eşleşen mesaj yok.",
-    "Statistics": "İstatistikler"
+    "Statistics": "İstatistikler",
+    "Cannot create threads: :roles": "Konu açamaz: :roles",
+    "Polls are disabled in this section.": "Bu bölümde anketler kapalı.",
+    "This section is archived: it is read-only.": "Bu bölüm arşivlendi: salt okunur.",
+    "archived section — moderator reply": "arşivlenmiş bölüm — moderatör yanıtı",
+    "Archived: read-only": "Arşivlendi: salt okunur",
+    "Permissions by role": "Role göre izinler",
+    "See the section": "Bölümü görme",
+    "Create threads": "Konu açma",
+    "Guests": "Ziyaretçiler",
+    "A user needs at least one allowed role: global roles count everywhere, section roles only in their section. Administrators have every right. Private sections still need a role scoped to them.": "Bir kullanıcının izin verilen en az bir rolü olmalıdır: genel roller her yerde, bölüm rolleri yalnızca kendi bölümlerinde geçerlidir. Yöneticilerin tüm hakları vardır. Özel bir bölüm yine de ona atanmış bir rol gerektirir.",
+    "Archived (read-only, except for moderators)": "Arşivlendi (moderatörler dışında salt okunur)",
+    "Polls allowed": "Anketlere izin verilir",
+    "Cannot see the section: :roles": "Bölümü göremez: :roles",
+    "Polls disabled": "Anketler kapalı"
 }

@@ -1323,5 +1323,19 @@
     "All my sections": "Todas mis secciones",
     "Fill in at least one filter.": "Rellena al menos un filtro.",
     "No posts match.": "Ningún mensaje coincide.",
-    "Statistics": "Estadísticas"
+    "Statistics": "Estadísticas",
+    "Cannot create threads: :roles": "No pueden crear temas: :roles",
+    "Polls are disabled in this section.": "Las encuestas están desactivadas en esta sección.",
+    "This section is archived: it is read-only.": "Esta sección está archivada: es de solo lectura.",
+    "archived section — moderator reply": "sección archivada — respuesta de moderador",
+    "Archived: read-only": "Archivada: solo lectura",
+    "Permissions by role": "Permisos por rol",
+    "See the section": "Ver la sección",
+    "Create threads": "Crear temas",
+    "Guests": "Invitados",
+    "A user needs at least one allowed role: global roles count everywhere, section roles only in their section. Administrators have every right. Private sections still need a role scoped to them.": "Un usuario necesita al menos un rol permitido: los roles globales cuentan en todas partes, los roles de sección solo en su sección. Los administradores tienen todos los derechos. Una sección privada sigue requiriendo un rol asignado a ella.",
+    "Archived (read-only, except for moderators)": "Archivada (solo lectura, salvo para los moderadores)",
+    "Polls allowed": "Encuestas permitidas",
+    "Cannot see the section: :roles": "No pueden ver la sección: :roles",
+    "Polls disabled": "Encuestas desactivadas"
 }

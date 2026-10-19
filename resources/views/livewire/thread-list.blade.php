@@ -13,6 +13,7 @@
             <div class="name">{{ $section->name }}</div>
             <img class="flag" src="{{ $section->flagUrl() }}" alt="{{ $section->community }}" title="{{ $section->communityLabel() }}">
             @if ($section->isPrivate())<img src="{{ asset('img/locked.png') }}" class="lock-icon" alt="{{ __('private') }}" title="{{ __('Private') }}">@endif
+            @if ($section->is_archived)<span title="{{ __('Archived: read-only') }}">🗄️</span>@endif
         </div>
     </a>
     <div class="list-tools">

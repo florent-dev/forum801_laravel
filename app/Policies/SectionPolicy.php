@@ -10,6 +10,9 @@ class SectionPolicy
 {
     public function view(?User $user, Section $section): bool
     {
+        if (! $section->allowsViewFrom($user)) {
+            return false;
+        }
         if (! $section->isPrivate()) {
             return true;
         }
@@ -78,7 +81,14 @@ class SectionPolicy
 
     public function createThread(User $user, Section $section): bool
     {
-        return $user->canParticipate() && $this->view($user, $section) && $this->canWriteInGuildForum($user, $section);
+        return $user->canParticipate() && $this->view($user, $section) && $this->canWriteInGuildForum($user, $section)
+            && $section->allowsThreadsFrom($user) && $this->canWriteInArchive($user, $section);
+    }
+
+    // Archived sections stay readable, but only their moderators can still write in them
+    public function canWriteInArchive(User $user, Section $section): bool
+    {
+        return ! $section->is_archived || $this->moderate($user, $section);
     }
 
     // A public guild forum can be read by anyone but only members and staff write in it
