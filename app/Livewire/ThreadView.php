@@ -108,7 +108,7 @@ class ThreadView extends Component
 
     protected function thread(): Thread
     {
-        return Thread::withTrashed()->with('section')->findOrFail($this->threadId);
+        return Thread::withTrashed()->with('section.guild')->findOrFail($this->threadId);
     }
 
     protected function visiblePosts(): Builder
@@ -517,7 +517,7 @@ class ThreadView extends Component
         $this->authorize('view', $thread);
         $posts = $this->visiblePosts()
             ->where('id', '<=', $this->ceilingId)
-            ->with(['user' => fn ($q) => $q->withCount(['posts' => fn ($p) => $p->where('is_hidden', false), 'receivedReactions'])->with(['roles', 'guildMemberships.guild']), 'reactions.user:id,name', 'deleter:id,name', 'moderator:id,name', 'hider:id,name'])
+            ->with(['user' => fn ($q) => $q->with($thread->section->guild_id ? ['roles', 'guildMemberships'] : ['roles']), 'reactions.user:id,name', 'deleter:id,name', 'moderator:id,name', 'hider:id,name'])
             ->orderBy('id')
             ->paginate(Post::PER_PAGE);
 

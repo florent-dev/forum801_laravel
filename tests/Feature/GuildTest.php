@@ -181,3 +181,12 @@ it('keeps the guild forum in the left bar on guild pages', function () {
     // Strangers cannot read a members-only forum, so they get the sections list
     $this->actingAs(userWithRole(Role::MEMBER))->get(route('guilds.show', $this->guild))->assertOk()->assertSeeLivewire('section-list');
 });
+
+it('shows the author guild under posts in the guild forum only', function () {
+    $guildThread = app(ForumService::class)->createThread($this->owner, $this->guild->section, 'Guild talk', 'Hi');
+    $public = app(ForumService::class)->createThread($this->owner, Section::factory()->create(), 'Public talk', 'Hi');
+
+    Livewire::actingAs($this->owner)->test(ThreadView::class, ['thread' => $guildThread])->assertSeeHtml('class="author-guild"');
+    Livewire::actingAs($this->owner)->test(ThreadView::class, ['thread' => $public])
+        ->assertDontSeeHtml('class="author-guild"')->assertDontSee('Cheese Knights')->assertDontSeeHtml('author-stats');
+});

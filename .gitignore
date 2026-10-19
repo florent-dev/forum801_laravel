@@ -22,3 +22,4 @@ yarn-error.log
 /.vscode
 /.zed
 /.claude
+.claude/settings.local.json

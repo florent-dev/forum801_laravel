@@ -1,5 +1,5 @@
-<div style="display:flex;flex-direction:column;min-height:0;flex:1" wire:poll.20s="checkNew">
-    <div class="panel-head">
+<div class="thread-view" style="display:flex;flex-direction:column;min-height:0;flex:1" wire:poll.20s="checkNew">
+    <div class="panel-head thread-head">
         <h1 class="thread-title thread-flags">
             @if ($thread->is_pinned)<span title="{{ __('Pinned') }}">📌</span>@endif
             @if ($thread->is_locked)<img src="{{ asset('img/locked.png') }}" class="lock-icon" alt="{{ __('locked') }}" title="{{ __('Locked') }}">@endif
@@ -8,6 +8,17 @@
             {{ $thread->title }}
         </h1>
         <div style="display:flex;gap:6px;align-items:center">
+            @can('update', $thread)
+                <div class="dropdown" x-data="{ open: false }" x-on:click.outside="open = false">
+                    <button type="button" class="icon-btn" x-on:click="open = !open" title="{{ __('Thread prefix') }}">🏷️ {{ __('Prefix') }} ▾</button>
+                    <div class="dropdown-menu" x-show="open" x-cloak x-transition.origin.top.right x-on:click="open = false">
+                        <button type="button" wire:click="setPrefix('')">— {{ __('None') }}</button>
+                        @foreach ($prefixes as $key => $label)
+                            <button type="button" wire:click="setPrefix('{{ $key }}')"><span class="prefix prefix-{{ $key }}">{{ $label }}</span></button>
+                        @endforeach
+                    </div>
+                </div>
+            @endcan
             @auth
                 <button type="button" class="icon-btn {{ $subscribed ? 'on' : '' }}" wire:click="toggleSubscription" title="{{ $subscribed ? __('Stop following') : __('Follow: get notified of new replies') }}">{{ $subscribed ? '★ '.__('Following') : '☆ '.__('Follow') }}</button>
             @endauth
@@ -64,26 +75,6 @@
                 {{ trans_choice(':count new post — click to show|:count new posts — click to show', $newCount) }}
             </button>
         @endif
-
-        <div class="thread-meta">
-            <span>{{ __('Started by') }} <x-user-name :user="$thread->user" /> {{ $thread->created_at->diffForHumans() }}</span>
-            <span>💬 {{ trans_choice(':count reply|:count replies', max(0, $thread->posts_count - 1)) }}</span>
-            <span>👁️ {{ trans_choice(':count view|:count views', $thread->views_count, ['count' => number_format($thread->views_count)]) }}</span>
-            <span class="spacer"></span>
-            @can('update', $thread)
-                <div class="dropdown" x-data="{ open: false }" x-on:click.outside="open = false">
-                    <button type="button" class="icon-btn" x-on:click="open = !open" title="{{ __('Thread prefix') }}">🏷️ {{ __('Prefix') }} ▾</button>
-                    <div class="dropdown-menu" x-show="open" x-cloak x-on:click="open = false">
-                        <button type="button" wire:click="setPrefix('')">— {{ __('None') }}</button>
-                        @foreach ($prefixes as $key => $label)
-                            <button type="button" wire:click="setPrefix('{{ $key }}')"><span class="prefix prefix-{{ $key }}">{{ $label }}</span></button>
-                        @endforeach
-                    </div>
-                </div>
-            @endcan
-            <a href="{{ route('sections.show', $thread->section) }}" wire:navigate>{{ $thread->section->name }}</a>
-        </div>
-
 
         @if ($thread->solution && $posts->onFirstPage() && $thread->solution->id !== $posts->first()?->id)
             <a class="solution-box" href="{{ route('posts.show', $thread->solution) }}" wire:navigate>
@@ -155,13 +146,10 @@
                         @foreach (($author?->roleAssignments() ?? collect())->where('name', '!=', 'member')->unique('name') as $role)
                             <span class="role" style="color: {{ $role->color }}">{{ $role->label }}</span>
                         @endforeach
-                        @if ($author && ($authorGuilds = $author->guildMemberships->pluck('guild')->filter())->isNotEmpty())
-                            <a class="author-guild" href="{{ route('guilds.show', $authorGuilds->first()) }}" wire:navigate title="{{ $authorGuilds->pluck('name')->implode(', ') }}">🏰 {{ $authorGuilds->first()->name }}@if ($authorGuilds->count() > 1) <span class="muted">+{{ $authorGuilds->count() - 1 }}</span>@endif</a>
+                        @if ($thread->section->guild && $author?->guildMemberships->contains('guild_id', $thread->section->guild_id))
+                            <a class="author-guild" href="{{ route('guilds.show', $thread->section->guild) }}" wire:navigate>🏰 {{ $thread->section->guild->name }}</a>
                         @endif
                         <div class="dateunderauthor" title="{{ $post->created_at->isoFormat('LLLL') }}">{{ $post->created_at->shortDateTime() }}</div>
-                        @if ($author)
-                            <div class="author-stats"><span class="rank">{{ __(\App\Models\User::rankFor($author->posts_count)) }}</span><br><span class="stat-posts">{{ trans_choice(':count post|:count posts', $author->posts_count, ['count' => number_format($author->posts_count)]) }} · ❤ {{ number_format($author->received_reactions_count) }}</span><br><span class="stat-joined">{{ __('Joined :date', ['date' => $author->created_at->translatedFormat('M Y')]) }}</span></div>
-                        @endif
                     </div>
                 </div>
                 <div class="post-main">
