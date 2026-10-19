@@ -2,6 +2,10 @@
 
 A web forum in the spirit of the old Atelier801 Flash forum. Built with Laravel 11, Livewire 3 (with Alpine) and PostgreSQL 16.
 
+![Home page: sections list, guild and forum statistics](docs/screenshots/home.png)
+
+![Thread view: thread list, post, reactions and Markdown editor](docs/screenshots/thread.png)
+
 ## Setup
 
 ```bash
