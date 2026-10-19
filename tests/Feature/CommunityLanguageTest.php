@@ -74,7 +74,7 @@ it('keeps every community reachable by url', function () {
 it('shows no activity block on the home page, only the sections', function () {
     app(ForumService::class)->createThread(userWithRole(Role::MEMBER), $this->en, 'English thread', 'Hi');
 
-    $this->get('/')->assertOk()->assertSeeLivewire('section-list')->assertDontSee('Mark everything read')->assertDontSee('Latest activity')->assertSee('Pick a section on the left to start reading.');
+    $this->get('/')->assertOk()->assertSeeLivewire('section-list')->assertDontSee('Mark everything read')->assertDontSee('Latest activity')->assertDontSee('Pick a section on the left to start reading.');
 });
 
 it('scopes search to the current community unless all is asked', function () {
