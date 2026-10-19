@@ -12,6 +12,7 @@ use App\Services\ForumService;
 use App\Services\MarkupRenderer;
 use App\Services\ModerationService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -553,6 +554,18 @@ class ThreadView extends Component
             'moveTargets' => $moveTargets,
             'preview' => $this->showPreview ? $renderer->render($this->replyBody) : null,
             'reactionTypes' => Reaction::TYPES,
+            'positions' => $this->postPositions($thread, $posts->pluck('id')->all()),
         ]);
+    }
+
+    // Post number within the thread (#1 is the opening post), counting deleted posts so numbers never shift
+    protected function postPositions(Thread $thread, array $ids): array
+    {
+        if (! $ids) {
+            return [];
+        }
+        $numbered = Post::withTrashed()->where('thread_id', $thread->id)->selectRaw('id, row_number() over (order by id) as position');
+
+        return DB::query()->fromSub($numbered, 'numbered')->whereIn('id', $ids)->pluck('position', 'id')->map(fn ($n) => (int) $n)->all();
     }
 }

@@ -81,3 +81,17 @@ it('turns polls off in a section', function () {
     Livewire::actingAs($this->member)->test(NewThread::class, ['section' => $this->section])->assertDontSee(__('Attach a poll'));
     Livewire::actingAs($this->member)->test(NewThread::class, ['section' => Section::factory()->create()])->assertSee(__('Attach a poll'));
 });
+
+it('numbers posts by their position in the thread, not their database id', function () {
+    // Posts elsewhere push database ids well past the thread's own numbering
+    threadIn(Section::factory()->create());
+    $thread = app(ForumService::class)->createThread($this->member, $this->section, 'Numbered', 'First');
+    $second = app(ForumService::class)->reply($this->member, $thread, 'Second');
+    $third = app(ForumService::class)->reply($this->member, $thread, 'Third');
+    $second->delete();
+
+    Livewire::actingAs($this->member)->test(ThreadView::class, ['thread' => $thread->fresh()])
+        ->assertSeeHtml('>#1</a>')
+        ->assertSeeHtml('>#3</a>')
+        ->assertDontSeeHtml('>#'.$third->id.'</a>');
+});

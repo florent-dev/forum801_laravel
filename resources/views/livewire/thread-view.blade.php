@@ -222,7 +222,7 @@
                         </div>
                         <div class="post-actions">
                             @if ($post->edited_at)<span title="{{ $post->edited_at->shortDateTime() }}">{{ __('edited :when', ['when' => $post->edited_at->diffForHumans()]) }}</span>@endif
-                            <a href="{{ route('posts.show', $post) }}" x-data x-on:click.prevent="navigator.clipboard?.writeText($el.href); $dispatch('toast', { message: @js(__('Link copied to clipboard.')), type: 'info' })" title="{{ __('Copy link to this post') }}">#{{ $post->id }}</a>
+                            <a href="{{ route('posts.show', $post) }}" x-data x-on:click.prevent="navigator.clipboard?.writeText($el.href); $dispatch('toast', { message: @js(__('Link copied to clipboard.')), type: 'info' })" title="{{ __('Copy link to this post') }}">#{{ $positions[$post->id] ?? $post->id }}</a>
                         </div>
                     </div>
                 </div>
