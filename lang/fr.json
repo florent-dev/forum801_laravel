@@ -1337,5 +1337,6 @@
     "Archived (read-only, except for moderators)": "Archivée (lecture seule, sauf pour les modérateurs)",
     "Polls allowed": "Sondages autorisés",
     "Cannot see the section: :roles": "Ne peuvent pas voir la section : :roles",
-    "Polls disabled": "Sondages désactivés"
+    "Polls disabled": "Sondages désactivés",
+    "RSS feed": "Flux RSS"
 }

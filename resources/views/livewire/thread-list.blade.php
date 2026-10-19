@@ -17,6 +17,23 @@
         </div>
     </a>
     <div class="list-tools">
+        {{-- Section links, kept here since the section page shows no main frame --}}
+        <span style="display:flex;gap:2px">
+            @if ($guild = $section->guild)
+                <a class="icon-btn" href="{{ route('guilds.show', $guild) }}" wire:navigate title="{{ __('Guild page') }}"><x-art name="guilds" size="14" /></a>
+                @can('manageMembers', $guild)
+                    @php($pending = $guild->applications()->where('status', 'pending')->count())
+                    <a class="icon-btn" href="{{ route('guilds.manage', [$guild, 'tab' => $pending ? 'applications' : 'members']) }}" wire:navigate title="{{ __('Manage') }}"><x-art name="settings" size="14" />@if ($pending) <span class="badge" title="{{ __('Applications waiting') }}">{{ $pending }}</span>@endif</a>
+                @endcan
+            @endif
+            {{-- Feeds only exist for public sections --}}
+            @unless ($section->isPrivate())
+                <a class="icon-btn" href="{{ route('feeds.section', $section) }}" title="{{ __('RSS feed') }}">📡</a>
+            @endunless
+            @can('update', $section)
+                <a class="icon-btn" href="{{ route('sections.settings', $section) }}" wire:navigate title="{{ __('Section settings') }}">⚙️</a>
+            @endcan
+        </span>
         @auth
             <span style="display:flex;gap:2px;margin-left:auto">
                 @if ($canModerate)

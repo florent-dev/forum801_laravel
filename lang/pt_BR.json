@@ -1337,5 +1337,6 @@
     "Archived (read-only, except for moderators)": "Arquivada (somente leitura, exceto para moderadores)",
     "Polls allowed": "Enquetes permitidas",
     "Cannot see the section: :roles": "Não podem ver a seção: :roles",
-    "Polls disabled": "Enquetes desativadas"
+    "Polls disabled": "Enquetes desativadas",
+    "RSS feed": "Feed RSS"
 }

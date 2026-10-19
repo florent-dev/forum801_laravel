@@ -1337,5 +1337,6 @@
     "Archived (read-only, except for moderators)": "Arşivlendi (moderatörler dışında salt okunur)",
     "Polls allowed": "Anketlere izin verilir",
     "Cannot see the section: :roles": "Bölümü göremez: :roles",
-    "Polls disabled": "Anketler kapalı"
+    "Polls disabled": "Anketler kapalı",
+    "RSS feed": "RSS beslemesi"
 }

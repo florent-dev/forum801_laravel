@@ -1337,5 +1337,6 @@
     "Archived (read-only, except for moderators)": "Archiviert (nur lesbar, außer für Moderatoren)",
     "Polls allowed": "Umfragen erlaubt",
     "Cannot see the section: :roles": "Können den Bereich nicht sehen: :roles",
-    "Polls disabled": "Umfragen deaktiviert"
+    "Polls disabled": "Umfragen deaktiviert",
+    "RSS feed": "RSS-Feed"
 }

@@ -1337,5 +1337,6 @@
     "Archived (read-only, except for moderators)": "В архиве (только чтение, кроме модераторов)",
     "Polls allowed": "Опросы разрешены",
     "Cannot see the section: :roles": "Не могут видеть раздел: :roles",
-    "Polls disabled": "Опросы отключены"
+    "Polls disabled": "Опросы отключены",
+    "RSS feed": "RSS-лента"
 }

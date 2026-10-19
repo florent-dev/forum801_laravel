@@ -1337,5 +1337,6 @@
     "Archived (read-only, except for moderators)": "Gearchiveerd (alleen-lezen, behalve voor moderators)",
     "Polls allowed": "Peilingen toegestaan",
     "Cannot see the section: :roles": "Kunnen de sectie niet zien: :roles",
-    "Polls disabled": "Peilingen uitgeschakeld"
+    "Polls disabled": "Peilingen uitgeschakeld",
+    "RSS feed": "RSS-feed"
 }

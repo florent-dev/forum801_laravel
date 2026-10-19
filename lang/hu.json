@@ -1337,5 +1337,6 @@
     "Archived (read-only, except for moderators)": "Archivált (csak olvasható, kivéve a moderátoroknak)",
     "Polls allowed": "Szavazások engedélyezve",
     "Cannot see the section: :roles": "Nem láthatják a szekciót: :roles",
-    "Polls disabled": "Szavazások kikapcsolva"
+    "Polls disabled": "Szavazások kikapcsolva",
+    "RSS feed": "RSS-hírcsatorna"
 }
