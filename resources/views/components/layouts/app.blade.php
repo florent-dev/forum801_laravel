@@ -16,10 +16,12 @@
         <button type="button" class="drawer-toggle" aria-label="{{ __('Menu') }}" aria-controls="left-panel" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
-        <a class="logo" href="{{ route('home') }}" wire:navigate>
-            <img src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}">
-            <small>{{ __('since 2026') }}</small>
-        </a>
+        <div class="logo">
+            <a href="{{ route('home') }}" wire:navigate><img src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}"></a>
+            {{-- Refreshed every minute: the header is on every page --}}
+            @php($onlineCount = cache()->remember('header-online-count', 60, fn () => \App\Models\User::visiblyOnline()->count()))
+            <a class="online-count" href="{{ route('online') }}" wire:navigate><span class="online-dot on"></span>{{ __(':count online', ['count' => $onlineCount]) }}</a>
+        </div>
         <div class="search">
             <button type="button" class="search-trigger" x-data x-on:click="$dispatch('open-search')" title="{{ __('Search') }} (/)">
                 <x-art name="search" size="18" />
@@ -29,7 +31,7 @@
         </div>
         <div class="usermenu">
             @php($currentCommunity = \App\Support\Community::current())
-            <button type="button" class="hb-item" x-data x-on:click="$dispatch('start-tour')" title="{{ __('Guided tour') }}"><x-art name="help" class="hb-icon" /></button>
+            <button type="button" class="hb-item tour-trigger" x-data x-on:click="$dispatch('start-tour')" title="{{ __('Guided tour') }}"><x-art name="help" class="hb-icon" /></button>
             @php($currentLocale = \App\Support\Locale::current())
             <div class="dropdown language-switch" x-data="{ open: false }" x-on:click.outside="open = false" x-on:keydown.escape="open = false">
                 <button type="button" class="hb-item" x-on:click="open = !open" title="{{ __('Language: :name', ['name' => \App\Support\Locale::label($currentLocale)]) }}" aria-haspopup="true">
@@ -146,7 +148,8 @@
                     if (seen === null) {
                         try { seen = localStorage.getItem('tourDone:' + key) === '1'; } catch (e) { seen = true; }
                     }
-                    if (! seen) setTimeout(() => this.start(), 900);
+                    // The tour points at desktop layout elements: never start it by itself on small screens
+                    if (! seen && ! window.matchMedia('(max-width: 800px)').matches) setTimeout(() => this.start(), 900);
                     window.addEventListener('resize', () => this.open && this.place());
                 },
                 start() {

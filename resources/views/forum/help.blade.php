@@ -2,7 +2,7 @@
     <x-slot:left>@include('partials.side-nav')</x-slot:left>
     <div class="panel-head">
         <h1 class="with-art"><x-art name="help" /> {{ __('Help & tips') }}</h1>
-        <button type="button" class="btn small primary" x-data x-on:click="$dispatch('start-tour')">❓ {{ __('Replay the tour') }}</button>
+        <button type="button" class="btn small primary tour-trigger" x-data x-on:click="$dispatch('start-tour')">❓ {{ __('Replay the tour') }}</button>
     </div>
     <div class="scroll settings-page">
         @foreach ([

@@ -40,22 +40,37 @@
     </div>
 
     <div class="dropdown" x-data="{ open: false }" x-on:click.outside="open = false" x-on:keydown.escape="open = false">
-        <button type="button" class="hb-user" x-on:click="open = !open" aria-haspopup="true" :aria-expanded="open">
+        <button type="button" class="hb-user" :class="{ 'open': open }" x-on:click="open = !open" aria-haspopup="true" :aria-expanded="open" title="{{ __('My account') }}">
             <img src="{{ $user->avatar() }}" alt="">
-            <span style="color: {{ $user->displayColor() }}">{{ $user->name }}</span> ▾
+            <span class="hb-user-name" style="color: {{ $user->displayColor() }}">{{ $user->name }}</span>
+            <span class="hb-chevron" aria-hidden="true">▾</span>
         </button>
-        <div class="dropdown-menu" x-show="open" x-cloak x-transition.origin.top.right>
-            <a href="{{ route('profile', $user) }}" wire:navigate><x-art name="profile" size="18" /> {{ __('My profile') }}</a>
-            <a href="{{ route('settings') }}" wire:navigate><x-art name="settings" size="18" /> {{ __('Settings') }}</a>
+        <div class="dropdown-menu user-menu" x-show="open" x-cloak x-transition.origin.top.right x-on:click="open = false">
+            @php($topRole = $user->roleAssignments()->where('name', '!=', \App\Models\Role::MEMBER)->sortByDesc('rank')->first())
+            <a class="user-card" href="{{ route('profile', $user) }}" wire:navigate>
+                <img src="{{ $user->avatar() }}" alt="">
+                <span>
+                    <strong style="color: {{ $user->displayColor() }}">{{ $user->name }}</strong>
+                    @if ($topRole)<small style="color: {{ $topRole->color }}">{{ $topRole->label }}</small>@endif
+                    <small class="muted">{{ __('My profile') }} ›</small>
+                </span>
+            </a>
+            <a href="{{ route('messages') }}" wire:navigate><x-art name="messages" size="18" /> {{ __('Messages') }}</a>
+            <a href="{{ route('notifications') }}" wire:navigate><x-art name="notifications" size="18" /> {{ __('Notifications') }}</a>
             <a href="{{ route('friends') }}" wire:navigate><x-art name="friends" size="18" /> {{ __('Friends') }}</a>
+            <div class="dropdown-sep"></div>
             <a href="{{ route('bookmarks') }}" wire:navigate><x-art name="bookmarks" size="18" /> {{ __('Bookmarks') }}</a>
             <a href="{{ route('subscriptions') }}" wire:navigate><x-art name="followed" size="18" /> {{ __('Followed threads') }}</a>
-            <a href="{{ route('messages') }}" wire:navigate><x-art name="messages" size="18" /> {{ __('Messages') }}</a>
+            <div class="dropdown-sep"></div>
+            <a href="{{ route('settings') }}" wire:navigate><x-art name="settings" size="18" /> {{ __('Settings') }}</a>
             <a href="{{ route('help') }}" wire:navigate><x-art name="help" size="18" /> {{ __('Help & tips') }}</a>
-            <a href="{{ route('notifications') }}" wire:navigate><x-art name="notifications" size="18" /> {{ __('Notifications') }}</a>
-            @can('access-moderation')<a href="{{ route('moderation') }}" wire:navigate><x-art name="moderation" size="18" /> {{ __('Moderation') }}</a>@endcan
-            @can('admin')<a href="{{ route('admin.users') }}" wire:navigate><x-art name="admin" size="18" /> {{ __('Administration') }}</a>@endcan
-            <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit"><x-art name="logout" size="18" /> {{ __('Log out') }}</button></form>
+            @if (auth()->user()->can('access-moderation') || auth()->user()->can('admin'))
+                <div class="dropdown-sep"></div>
+                @can('access-moderation')<a href="{{ route('moderation') }}" wire:navigate><x-art name="moderation" size="18" /> {{ __('Moderation') }}</a>@endcan
+                @can('admin')<a href="{{ route('admin.users') }}" wire:navigate><x-art name="admin" size="18" /> {{ __('Administration') }}</a>@endcan
+            @endif
+            <div class="dropdown-sep"></div>
+            <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="danger-item"><x-art name="logout" size="18" /> {{ __('Log out') }}</button></form>
         </div>
     </div>
 </div>
